@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Foto Netle – 2K’ya Kadar</title>
+<title>Foto Netle – 4K’ya Kadar</title>
 <style>
 :root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f6f5f2;--card:#fff;--tx:#1c1b1a;--mut:#6b6862;--ac:#6d4aff;--bd:#e3e0da}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
@@ -38,7 +38,7 @@ button:disabled{opacity:.5}
 <body>
 <main>
 <h1>Foto Netle</h1>
-<p class="sub">Fotoğrafını yükle, en fazla 2K (2048 px) çözünürlükte netleştirilmiş halini indir. Her şey tarayıcında işlenir, dosyan hiçbir yere gönderilmez.</p>
+<p class="sub">Fotoğrafını yükle, en fazla 4K (3840 px) çözünürlükte netleştirilmiş halini indir. Her şey tarayıcında işlenir, dosyan hiçbir yere gönderilmez.</p>
 
 <div class="card">
   <div id="drop">Fotoğraf seçmek için dokun veya buraya sürükle</div>
@@ -48,7 +48,7 @@ button:disabled{opacity:.5}
 <div class="card" id="panel" hidden>
   <div class="row">
     <label>Hedef çözünürlük
-      <select id="res"><option value="1280">HD (1280 px)</option><option value="1920">Full HD (1920 px)</option><option value="2048" selected>2K (2048 px)</option></select>
+      <select id="res"><option value="1280">HD (1280 px)</option><option value="1920">Full HD (1920 px)</option><option value="2048">2K (2048 px)</option><option value="3840" selected>4K (3840 px)</option></select>
     </label>
     <label>Netlik: <span id="vS">0.6</span>
       <input type="range" id="sharp" min="0" max="1.5" step="0.1" value="0.6">
@@ -101,18 +101,18 @@ function process(){
   if(!img)return;
   const btn=$('go');btn.disabled=true;btn.textContent='İşleniyor…';
   setTimeout(()=>{
-    try{run()}catch(e){$('info').textContent='Hata: '+e.message}
+    try{run()}catch(e){$('info').textContent='Hata: '+e.message+' (daha düşük çözünürlük dene)'}
     btn.disabled=false;btn.textContent='Netleştir';
   },30);
 }
 
 function run(){
-  const maxSide=Math.min(+$('res').value,2048);
+  const maxSide=+$('res').value;
   const w0=img.naturalWidth,h0=img.naturalHeight;
   const k=maxSide/Math.max(w0,h0);
   const W=Math.round(w0*k),H=Math.round(h0*k);
 
-  // Önce: orijinal (ekranda göstermek için hedef boyutta, basit ölçekleme)
+  // Önce: orijinal (hedef boyutta, basit ölçekleme)
   const b=$('before');b.width=W;b.height=H;
   const bc=b.getContext('2d');bc.imageSmoothingQuality='high';bc.drawImage(img,0,0,W,H);
 
